@@ -3,10 +3,7 @@ package com.emami.emmusic.web.api
 import com.emami.emmusic.db.model.EmFile
 import com.emami.emmusic.db.repo.EmFileRepository
 import com.emami.emmusic.file.FileSystemStorageService
-import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource
-import org.springframework.core.io.UrlResource
-import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.nio.file.Files
 
 @RestController
 @RequestMapping(path = ["/api/file"], produces = ["application/json"])
@@ -47,7 +42,7 @@ class FileApi(val fileSystemStorageService: FileSystemStorageService, val emFile
     fun uploadFile(
         @PathVariable("id") id: String,
     ): ResponseEntity<Any> {
-        val emFile = emFileRepository.findById(id.toLong())
+        val emFile = emFileRepository.findById(id)
         if (emFile.isEmpty) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
                 .body(mutableMapOf("message" to "file with id=$id not found"))
@@ -65,4 +60,5 @@ class FileApi(val fileSystemStorageService: FileSystemStorageService, val emFile
         return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_JSON)
             .body(mutableMapOf("message" to "cannot load file with id=$id"))
     }
+
 }

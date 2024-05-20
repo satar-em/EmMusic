@@ -19,6 +19,6 @@ server:
     include-stacktrace: always
 em-music:
   security:
-    is-test: true
+    is-test: false
   storage:
     basePath: C:\programing\EmMusic\back-end\em-music-backend\build

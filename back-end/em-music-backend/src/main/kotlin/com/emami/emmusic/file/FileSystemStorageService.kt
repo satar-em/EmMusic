@@ -1,6 +1,7 @@
 package com.emami.emmusic.file
 
 import com.emami.emmusic.db.model.EmFile
+import com.emami.emmusic.security.service.MySecurityService
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -10,7 +11,7 @@ import java.nio.file.Paths
 
 
 @Service
-class FileSystemStorageService(storageProperties: StorageProperties) {
+class FileSystemStorageService(storageProperties: StorageProperties, val mySecurityService: MySecurityService) {
     private val rootBasePath: Path = Paths.get(storageProperties.basePath)
 
     fun store(file: MultipartFile, fileName: String): EmFile {
@@ -33,7 +34,13 @@ class FileSystemStorageService(storageProperties: StorageProperties) {
             file.inputStream.use { inputStream ->
                 Files.copy(inputStream, destinationFile)
             }
-            return EmFile(fileName, fileNameNew,Files.probeContentType(destinationFile), file.size)
+            return EmFile(
+                fileName,
+                fileNameNew,
+                Files.probeContentType(destinationFile),
+                file.size,
+                mySecurityService.getCurrentUserLogged()
+            )
         } catch (e: Exception) {
             throw Exception("Failed to store file. (${e.message})")
         }

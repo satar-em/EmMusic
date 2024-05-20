@@ -1,8 +1,10 @@
 package com.emami.emmusic.security.model
 
+import com.emami.emmusic.db.model.EmFile
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import org.apache.tomcat.util.http.fileupload.FileUpload
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -25,6 +27,17 @@ data class EmUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 10
+
+    @OneToMany(mappedBy = "uploadedBy",fetch = FetchType.EAGER)
+    @JsonIgnore
+    val fileUploaded = mutableListOf<EmFile>()
+
+    @JsonGetter("fileUploaded")
+    fun getJsonFileUploaded(): MutableList<Any> {
+        return fileUploaded.map {
+            mutableMapOf("id" to it.id, "name" to it.name, "mimeType" to it.mimeType)
+        }.toMutableList()
+    }
 
     @JsonIgnore
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
