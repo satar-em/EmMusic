@@ -54,12 +54,19 @@ data class EmPlaylist(
         return result
     }
 
+    @JsonGetter("owner")
+    fun getJsonOwner(): MutableMap<String, Any>? {
+        if (owner != null) return mutableMapOf("id" to owner!!.id, "username" to owner!!.username)
+        return null
+    }
+
     @JsonGetter("musics")
     fun getJsonMusics(): MutableList<Any> {
         return musics.map {
             mutableMapOf("id" to it.id, "name" to it.name)
         }.toMutableList()
     }
+
 
     @JsonSetter("musics", contentNulls = Nulls.SKIP)
     fun setJsonMusics(musicsJson: MutableList<Any>) {

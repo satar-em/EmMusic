@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
 
 @RestController
 @RequestMapping(path = ["/api/file"], produces = ["application/json"])
@@ -25,13 +26,14 @@ class FileApi(val fileSystemStorageService: FileSystemStorageService, val emFile
         @RequestPart("file") file: MultipartFile,
         @RequestPart("name", required = false) name: String?
     ): ResponseEntity<Any> {
-        var emfile: EmFile
+        val emfile: EmFile
+        //val filename = file.originalFilename
         var filename = name
         if (name.isNullOrBlank()) {
             filename = file.originalFilename
         }
         try {
-            emfile = emFileRepository.save(fileSystemStorageService.store(file, filename!!))
+            emfile = emFileRepository.save(fileSystemStorageService.storeAudio(file, filename!!))
         } catch (e: Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mutableMapOf("error" to e.message))
         }
