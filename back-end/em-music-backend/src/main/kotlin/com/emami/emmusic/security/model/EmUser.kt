@@ -4,7 +4,6 @@ import com.emami.emmusic.db.model.EmFile
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
-import org.apache.tomcat.util.http.fileupload.FileUpload
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -14,7 +13,7 @@ data class EmUser(
     @Column(unique = true) private var username: String,
     private var password: String,
     var email: String,
-    var phone: String,
+    @Column(unique = true) var phoneNumber: String,
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "em_user_authority",
@@ -28,7 +27,7 @@ data class EmUser(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 10
 
-    @OneToMany(mappedBy = "uploadedBy",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "uploadedBy", fetch = FetchType.EAGER)
     @JsonIgnore
     val fileUploaded = mutableListOf<EmFile>()
 

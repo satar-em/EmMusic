@@ -6,4 +6,6 @@ import java.util.*
 
 interface EmUserRepository : JpaRepository<EmUser, Long> {
     fun findByUsername(username: String): Optional<EmUser>
+    fun findByPhoneNumber(phoneNumber: String): Optional<EmUser>
+
 }

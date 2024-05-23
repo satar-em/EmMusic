@@ -36,7 +36,7 @@ class InitSecurity(
                     "system-administrator",
                     passwordEncoder.encode("system@system"),
                     "system@system.com",
-                    "09136729464",
+                    "00000000000",
                     mutableListOf(systemAdministrator)
                 )
             emUserRepository.save(emUserSystem)
