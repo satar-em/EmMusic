@@ -6,9 +6,13 @@ import java.util.Calendar
 @Entity
 data class EmNewRegister(
     val smsCode: String,
+    val firstname: String,
+    val lastname: String,
     val username: String,
     val password: String,
     @Column(unique = true) val phoneNumber: String,
+    //@Column(unique = true) val email: String,
+    var address: String,
     val gender: String,
     val expireTime: Calendar
 ) {

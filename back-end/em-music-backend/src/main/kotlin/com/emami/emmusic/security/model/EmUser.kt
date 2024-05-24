@@ -1,12 +1,14 @@
 package com.emami.emmusic.security.model
 
 import com.emami.emmusic.db.model.EmFile
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.util.Calendar
 
 @Entity
 data class EmUser(
@@ -26,6 +28,10 @@ data class EmUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 10
+
+    @Column(columnDefinition = "timestamp with time zone")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "utc")
+    var createdAt: Calendar = Calendar.getInstance()
 
     @OneToMany(mappedBy = "uploadedBy", fetch = FetchType.EAGER)
     @JsonIgnore

@@ -21,13 +21,15 @@ class InitSecurity(
         if (emUserRepository.count() == 0L) {
             val systemAdministrator = EmAuthority("System Administrator", "ROLE_ROOT_ADMIN", null)
             emAuthorityRepository.save(systemAdministrator)
+            val publicUserRole = EmAuthority("System Public User", "ROLE_USER", null)
+            emAuthorityRepository.save(publicUserRole)
             val emUserAdmin =
                 EmUser(
                     "admin",
                     passwordEncoder.encode("admin@emami"),
                     "admin@mail.com",
                     "09136729464",
-                    mutableListOf(systemAdministrator)
+                    mutableListOf(systemAdministrator,publicUserRole)
                 )
             emUserRepository.save(emUserAdmin)
 
@@ -37,7 +39,7 @@ class InitSecurity(
                     passwordEncoder.encode("system@system"),
                     "system@system.com",
                     "00000000000",
-                    mutableListOf(systemAdministrator)
+                    mutableListOf(systemAdministrator,publicUserRole)
                 )
             emUserRepository.save(emUserSystem)
         }

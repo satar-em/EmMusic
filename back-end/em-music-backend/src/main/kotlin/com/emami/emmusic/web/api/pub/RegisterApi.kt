@@ -32,12 +32,20 @@ class RegisterApi(val smsService: SmsService, val emNewRegisterRepository: EmNew
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(mutableMapOf("message" to "phone number used before"))
             }
+            if (emUserRepository.findByUsername(request.username).isPresent) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(mutableMapOf("message" to "username used before"))
+            }
             val emNewRegister = emNewRegisterRepository.save(
                 EmNewRegister(
                     smsCode,
+                    request.firstname,
+                    request.lastname,
                     request.username,
                     request.password,
                     request.phoneNumber,
+                    //request.email,
+                    request.address,
                     request.gender,
                     exception
                 )
@@ -63,6 +71,7 @@ class RegisterApi(val smsService: SmsService, val emNewRegisterRepository: EmNew
                 .body(mutableMapOf("message" to "your validation is expired"))
         }
         if (emNewRegister.get().smsCode == request.smsCode) {
+            //MyStaticConfigs.staticEmAuthorityRepository.findByName("System Public User").get()
             return ResponseEntity.ok(mutableMapOf("message" to "Active New Register Successfully"))
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
