@@ -14,6 +14,10 @@ import java.util.Calendar
 data class EmUser(
     @Column(unique = true) private var username: String,
     private var password: String,
+    val firstname: String,
+    val lastname: String,
+    var address: String,
+    val gender: String,
     var email: String,
     @Column(unique = true) var phoneNumber: String,
     @ManyToMany(fetch = FetchType.EAGER)

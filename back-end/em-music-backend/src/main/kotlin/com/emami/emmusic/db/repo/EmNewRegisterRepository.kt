@@ -5,5 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface EmNewRegisterRepository:JpaRepository<EmNewRegister,String> {
+
     fun findByPhoneNumber(phoneNumber: String): Optional<EmNewRegister>
+    fun findByExpireTimeBefore(expireTime: Calendar): List<EmNewRegister>
+
 }

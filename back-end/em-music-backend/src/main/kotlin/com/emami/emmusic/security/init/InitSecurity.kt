@@ -27,6 +27,10 @@ class InitSecurity(
                 EmUser(
                     "admin",
                     passwordEncoder.encode("admin@emami"),
+                    "admin",
+                    "admin",
+                    "none",
+                    "none",
                     "admin@mail.com",
                     "09136729464",
                     mutableListOf(systemAdministrator,publicUserRole)
@@ -37,6 +41,10 @@ class InitSecurity(
                 EmUser(
                     "system-administrator",
                     passwordEncoder.encode("system@system"),
+                    "system",
+                    "system",
+                    "none",
+                    "none",
                     "system@system.com",
                     "00000000000",
                     mutableListOf(systemAdministrator,publicUserRole)

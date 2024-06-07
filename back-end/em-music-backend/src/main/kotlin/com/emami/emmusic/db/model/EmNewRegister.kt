@@ -11,7 +11,7 @@ data class EmNewRegister(
     val username: String,
     val password: String,
     @Column(unique = true) val phoneNumber: String,
-    //@Column(unique = true) val email: String,
+    @Column(unique = true) val email: String,
     var address: String,
     val gender: String,
     val expireTime: Calendar
